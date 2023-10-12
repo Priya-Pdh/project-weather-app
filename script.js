@@ -72,8 +72,8 @@ const fetchWeatherData = (city) => {
       container.textContent = "";
       container.append(temp, heading, weatherDescription, divElement);
 
-       //change background color as per tempreture
-       function changeBackground() {
+      //change background color as per tempreture
+      function changeBackground() {
         if (temperature >= 25) {
           // Warm colors for higher temperatures
           container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
@@ -162,7 +162,7 @@ const getFiveDaysForecast = ({ lat, lon }) => {
 
         // get data from api and store into a variable
 
-        const weatherDes = day.weather[0].description;
+        const weatherDes = day.weather[0].main;
         const maxDegree = Math.floor(day.temp.max);
         const minDegree = Math.floor(day.temp.min);
         console.log(
@@ -181,20 +181,22 @@ const getFiveDaysForecast = ({ lat, lon }) => {
         let weatherIcon;
 
         switch (weatherDes.toLowerCase()) {
-          case "clear sky":
+          case "clear":
+          case "sunny":
             weatherIcon = "☀️";
             break;
           case "rain":
-          case "moderate rain":
-          case "light rain":
-          case "heavy rain":
             weatherIcon = "🌧️";
             break;
           case "cloudy":
+          case "clouds":
             weatherIcon = "☁️";
             break;
           case "partly cloudy":
             weatherIcon = "⛅️";
+            break;
+          case "windy":
+            weatherIcon = "💨";
             break;
           case "thunderstorm":
             weatherIcon = "🌩️";
