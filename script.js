@@ -175,7 +175,7 @@ const getFiveDaysForecast = ({ lat, lon }) => {
         const temperatureCell = row.insertCell(2);
 
         //insert class name for weatherIcon
-        descriptionCell.classList.add = "weather-icon";
+        descriptionCell.classList.add("weather-icon");
 
         //create function that show icon as per weather condition
         let weatherIcon;

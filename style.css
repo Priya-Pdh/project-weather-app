@@ -4,7 +4,7 @@ body {
 
 #search-input {
   padding: 0.5rem;
-  width: 15rem;
+  width: 12rem;
 }
 
 #search-exit-btn,
@@ -16,7 +16,9 @@ body {
 }
 
 #search-exit-btn:hover,
-#search-btn:hover {
+#search-btn:hover,
+#cities-search-btn:hover,
+#fav-cities-btn:hover {
   opacity: 0.6;
 }
 
@@ -26,14 +28,11 @@ body {
   color: #fff;
   font-size: 1.2rem;
 }
-#cities-search-btn:hover {
-  opacity: 0.6;
-}
 
 #fav-cities {
   display: flex;
-  width: 55%;
   justify-content: end;
+  margin-right: 30px;
 }
 #fav-cities-btn {
   border: none;
@@ -44,15 +43,14 @@ body {
   border-radius: 50%;
   padding: 1rem;
   cursor: pointer;
-}
-
-#fav-cities-btn:hover {
-  opacity: 0.6;
+  margin: 1%;
 }
 
 .weather-container {
-  width: 50%;
-  margin: auto;
+  padding-left: 15%;
+}
+ h2 {
+  font-size: 1rem;
 }
 
 /* Sunrise and sunset styles */
@@ -64,10 +62,7 @@ body {
 
 /* Search styles */
 .search {
-  display: flex;
-  justify-content: end;
-  width: 40rem;
-  margin-top: 3rem;
+  margin: 10% 0 0 16%;
 }
 
 /* Error message styles */
@@ -83,24 +78,55 @@ h2 {
 }
 /* styling for 5 days forecast table*/
 table {
-  border-spacing: 10px;
-  width: 50%;
-  margin: 20px auto;
+  padding-left: 10%;
 }
 th,
 td {
   text-align: left;
-  padding: 8px;
+  padding: 25px;
 }
 th {
   background-color: #f2f2f2;
 }
 .weather-icon {
-  width: 30px;
-  height: 30px;
+ font-size: 20px;
   vertical-align: middle;
 }
 /* Adjust the spacing between columns */
+td:nth-child(2) {
+  padding-left: 15%; /* Adjust padding for the third column */
+}
 td:nth-child(3) {
-  padding-left: 0; /* Adjust padding for the third column */
+  padding-right: 0;
+}
+
+
+
+/* Media queries for tablet and desktop */
+@media (min-width: 768px) and (max-width: 1380px) {
+  /* Tablet and desktop styles can go here */
+  body {
+    margin: 10% 25% 10% 25%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow */
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  .weather-container {
+    padding-left: 20%;
+    padding-top: 2%;
+  }
+  .search {
+    margin: 0 0 0 20%;
+    padding: 5% 0 1% 0;
+  }
+
+  table {
+    margin-left: 6%;
+  }
+  #fav-cities {
+    padding-right: 10%;
+  }
+  .weather-icon {
+    font-size: 30px;
+     vertical-align: middle;
+   }
 }
