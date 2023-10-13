@@ -74,6 +74,62 @@ const insertWeatherImage = (data) => {
   weatherImagesContainer.appendChild(weatherImage);
 };
 
+
+// Function to display weather data
+const displayWeatherData = (data) => {
+  const cityName = data.name;
+  const temperature = Math.floor(data.main.temp);
+  const description = data.weather[0].description;
+
+  // Sunrise and sunset times
+  const sunrise = data.sys.sunrise * 1000;
+  const sunset = data.sys.sunset * 1000;
+  const sunriseTime = new Date(sunrise);
+  const sunsetTime = new Date(sunset);
+  const sunriseHours = sunriseTime.getHours();
+  const sunriseMinutes = sunriseTime.getMinutes();
+  const sunsetHours = sunsetTime.getHours();
+  const sunsetMinutes = sunsetTime.getMinutes();
+
+  const sunriseTimeString = `${sunriseHours < 10 ? "0" : ""}${sunriseHours}:${sunriseMinutes < 10 ? "0" : ""}${sunriseMinutes}`;
+  const sunsetTimeString = `${sunsetHours < 10 ? "0" : ""}${sunsetHours}:${sunsetMinutes < 10 ? "0" : ""}${sunsetMinutes}`;
+
+  const heading = document.createElement("h1");
+  const temp = document.createElement("h2");
+  const weatherDescription = document.createElement("p");
+  const sunriseElement = document.createElement("p");
+  const sunsetElement = document.createElement("p");
+  const divElement = document.createElement("div");
+  divElement.classList.add("sunrise-sunset");
+
+  heading.textContent = cityName;
+  temp.textContent = `${temperature}°C`;
+  weatherDescription.textContent = description;
+  sunriseElement.textContent = `Sunrise   ${sunriseTimeString}`;
+  sunsetElement.textContent = `Sunset   ${sunsetTimeString}`;
+  divElement.append(sunriseElement, sunsetElement);
+
+  container.textContent = "";
+  container.append(temp, heading, weatherDescription, divElement);
+
+     //change background color as per tempreture
+     function changeBackground() {
+      if (temperature >= 25) {
+        // Warm colors for higher temperatures
+        container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
+      } else if (temperature < 25 && temperature >= 13) {
+        // Neutral color for temperatures between 13 and 25 degrees
+        container.style.background = "linear-gradient(#ffffff, #669999)";
+      } else {
+        // Cold colors for temperatures less than 13 degrees
+        container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
+      }
+    }
+
+    changeBackground();
+};
+
+
 // Fetch Data
 const fetchWeatherData = (city) => {
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${apiKey}`;
@@ -81,64 +137,7 @@ const fetchWeatherData = (city) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-
       getFiveDaysForecast(data.coord);
-      const cityName = data.name;
-      const temperature = Math.floor(data.main.temp);
-      const description = data.weather[0].description;
-
-      // Sunrise and sunset times
-      const sunrise = data.sys.sunrise * 1000;
-      const sunset = data.sys.sunset * 1000;
-      const sunriseTime = new Date(sunrise);
-      const sunsetTime = new Date(sunset);
-      const sunriseHours = sunriseTime.getHours();
-      const sunriseMinutes = sunriseTime.getMinutes();
-      const sunsetHours = sunsetTime.getHours();
-      const sunsetMinutes = sunsetTime.getMinutes();
-
-      const sunriseTimeString = `${
-        sunriseHours < 10 ? "0" : ""
-      }${sunriseHours}:${sunriseMinutes < 10 ? "0" : ""}${sunriseMinutes}`;
-
-      const sunsetTimeString = `${sunsetHours < 10 ? "0" : ""}${sunsetHours}:${
-        sunsetMinutes < 10 ? "0" : ""
-      }${sunsetMinutes}`;
-
-      const heading = document.createElement("h1");
-      const temp = document.createElement("h2");
-      const weatherDescription = document.createElement("p");
-      const sunriseElement = document.createElement("p");
-      const sunsetElement = document.createElement("p");
-      const divElement = document.createElement("div");
-      divElement.classList.add("sunrise-sunset");
-
-      heading.textContent = cityName;
-      temp.textContent = `${temperature}°C`;
-      weatherDescription.textContent = description;
-      sunriseElement.textContent = `Sunrise   ${sunriseTimeString}`;
-      sunsetElement.textContent = `Sunset   ${sunsetTimeString}`;
-      divElement.append(sunriseElement, sunsetElement);
-
-      container.textContent = "";
-      container.append(temp, heading, weatherDescription, divElement);
-
-      //change background color as per tempreture
-      function changeBackground() {
-        if (temperature >= 25) {
-          // Warm colors for higher temperatures
-          container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
-        } else if (temperature < 25 && temperature >= 13) {
-          // Neutral color for temperatures between 13 and 25 degrees
-          container.style.background = "linear-gradient(#ffffff, #669999)";
-        } else {
-          // Cold colors for temperatures less than 13 degrees
-          container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
-        }
-      }
-
-      changeBackground();
-      insertWeatherImage(data);
       return data;
     })
     .catch((err) => {
@@ -194,16 +193,13 @@ const getFiveDaysForecast = ({ lat, lon }) => {
 
   fetch(weatherForcastApi)
     .then((response) => {
-      if (!response.ok) {
-        throw console.log(`Network response was not ok (${response.status})`);
-      }
       return response.json();
     })
     .then((forecastData) => {
       // check if the response contains forecast data
       const forecast = forecastData.daily.slice(1, 6); // get the 5 days data
       console.log(forecast);
-      console.log(`5 days weather forecast for Stockholm`);
+      console.log(`5 days weather forecast`);
       forecast.forEach((day) => {
         //convert timestamp to date and display the short day name
         const date = new Date(day.dt * 1000);
@@ -268,3 +264,42 @@ const getFiveDaysForecast = ({ lat, lon }) => {
       console.log("Error fetching data:", error);
     });
 };
+
+// Function to fetch weather data using geolocation
+const fetchWeatherByGeolocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+
+      // Fetch weather data using the obtained latitude and longitude
+      fetchWeatherDataByGeolocation(latitude, longitude);
+    }, (error) => {
+      console.error("Geolocation error:", error.message); 
+    });
+  } else {
+    console.error("Geolocation is not supported by your browser.");
+  }
+};
+
+// Function to fetch weather data using latitude and longitude
+const fetchWeatherDataByGeolocation = (latitude, longitude) => {
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=${apiKey}`;
+
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      displayWeatherData(data);
+      getFiveDaysForecast({ lat:latitude, lon:longitude});
+    })
+    .catch((err) => {
+      errorMsg.textContent = `Network response was not ok (${err})`;
+      container.append(errorMsg);
+    });
+};
+
+// Add an event listener to the button for user's location
+const userLocationBtn = document.getElementById("user-location-btn");
+userLocationBtn.addEventListener("click", () => {
+  fetchWeatherByGeolocation();
+});
