@@ -20,8 +20,59 @@ const favouriteCities = [
   "Dubai",
   "Tokyo",
 ];
-// Starting index should be 0
+// Starting index for favourite cities array should be 0
 let currentCity = 0;
+
+//Adding CSS Animations
+// Function to insert the weather image based on the weather condition
+const insertWeatherImage = (data) => {
+  const weatherCondition = data.weather[0].main.toLowerCase();
+  const weatherImagesContainer = document.querySelector(
+    ".weather-images-container"
+  );
+
+  weatherImagesContainer.innerHTML = "";
+
+  // Create an image element for the weather and insert weather images
+  const weatherImage = document.createElement("img");
+
+  // Check the weather condition and set the appropriate image
+  if (weatherCondition === "sunny" || weatherCondition === "clear") {
+    weatherImage.src = "design/design1/assets/sunny.svg";
+    weatherImage.alt = "Sunny";
+
+    // Animation class for sunny images
+    weatherImage.classList.add("sunny-animation");
+  } else if (
+    weatherCondition === "cloudy" ||
+    weatherCondition === "clouds" ||
+    weatherCondition === "fog"
+  ) {
+    weatherImage.src = "design/design1/assets/cloudy.svg";
+    weatherImage.alt = "Cloudy";
+
+    // Animation class for cloudy images
+    weatherImage.classList.add("cloudy-animation");
+  } else if (
+    weatherCondition === "rain" ||
+    weatherCondition === "moderate rain"
+  ) {
+    weatherImage.src = "design/design1/assets/rainy.svg";
+    weatherImage.alt = "Rainy";
+
+    // Animation class for rainy images
+    weatherImage.classList.add("rainy-animation");
+  } else if (weatherCondition === "snow") {
+    weatherImage.src = "design/design1/assets/snow.svg";
+    weatherImage.alt = "Snowing";
+  }
+
+  // Show the weather images container
+  weatherImagesContainer.style.display = "block";
+
+  // Append the weather image to the weather images container
+  weatherImagesContainer.appendChild(weatherImage);
+};
 
 
 // Function to display weather data
@@ -135,7 +186,8 @@ const fetchWeatherData = (city) => {
       return data;
     })
     .catch((err) => {
-      errorMsg.textContent = `Network response was not ok (${err})`;
+      errorMsg.textContent = `Oops! Something went wrong with the network.`;
+      console.log(err);
       container.append(errorMsg);
     });
 };
