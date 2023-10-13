@@ -20,7 +20,7 @@ const favouriteCities = [
   "Dubai",
   "Tokyo",
 ];
-// Starting index should be 0
+// Starting index for favourite cities array should be 0
 let currentCity = 0;
 
 //Adding CSS Animations
@@ -43,7 +43,11 @@ const insertWeatherImage = (data) => {
 
     // Animation class for sunny images
     weatherImage.classList.add("sunny-animation");
-  } else if (weatherCondition === "cloudy" || weatherCondition === "clouds") {
+  } else if (
+    weatherCondition === "cloudy" ||
+    weatherCondition === "clouds" ||
+    weatherCondition === "fog"
+  ) {
     weatherImage.src = "design/design1/assets/cloudy.svg";
     weatherImage.alt = "Cloudy";
 
@@ -53,11 +57,14 @@ const insertWeatherImage = (data) => {
     weatherCondition === "rain" ||
     weatherCondition === "moderate rain"
   ) {
-    weatherImage.src = "design/design1/assets/Group34.png";
+    weatherImage.src = "design/design1/assets/rainy.svg";
     weatherImage.alt = "Rainy";
 
     // Animation class for rainy images
     weatherImage.classList.add("rainy-animation");
+  } else if (weatherCondition === "snow") {
+    weatherImage.src = "design/design1/assets/snow.svg";
+    weatherImage.alt = "Snowing";
   }
 
   // Show the weather images container

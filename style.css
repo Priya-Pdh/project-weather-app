@@ -103,21 +103,24 @@ td:nth-child(3) {
 .weather-images-container {
   display: none;
   position: absolute;
-  top: 17rem;
-  left: 67%;
+  top: 14rem;
+  left: 65%;
   transform: translateX(-50%);
 }
 
 /* Animation for sunny images*/
 .sunny-animation {
-  animation: sunny-pulsate 3s infinite;
+  animation: pulsate 3s infinite;
 }
-@keyframes sunny-pulsate {
+.rainy-animation {
+  animation: pulsate 7s infinite;
+}
+@keyframes pulsate {
   0% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.5);
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1);
@@ -131,10 +134,13 @@ td:nth-child(3) {
 }
 @keyframes cloudy-animation {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-60%);
+  }
+  50% {
+    transform: translateX(30%);
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(-60%);
   }
 }
 
