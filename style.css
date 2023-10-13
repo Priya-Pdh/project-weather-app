@@ -130,3 +130,46 @@ td:nth-child(3) {
      vertical-align: middle;
    }
 }
+
+
+/* animation*/
+/* //Adding CSS Animations */
+.sunny-animation {
+  animation: pulsate 3s infinite;
+}
+.rainy-animation {
+  animation: pulsate 7s infinite;
+}
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.cloudy-animation {
+  animation: cloudy-animation 5s linear infinite;
+  width: 8rem;
+}
+@keyframes cloudy-animation {
+  0% {
+    transform: translateX(-60%);
+  }
+  50% {
+    transform: translateX(30%);
+  }
+  100% {
+    transform: translateX(-60%);
+  }
+}
+.weather-images-container {
+  display: none;
+  position: absolute;
+  top: 14rem;
+  left: 65%;
+  transform: translateX(-50%);
+}
