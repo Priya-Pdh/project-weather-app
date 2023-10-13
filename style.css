@@ -49,7 +49,7 @@ body {
 .weather-container {
   padding-left: 15%;
 }
- h2 {
+h2 {
   font-size: 1rem;
 }
 
@@ -89,7 +89,7 @@ th {
   background-color: #f2f2f2;
 }
 .weather-icon {
- font-size: 20px;
+  font-size: 20px;
   vertical-align: middle;
 }
 /* Adjust the spacing between columns */
@@ -100,7 +100,43 @@ td:nth-child(3) {
   padding-right: 0;
 }
 
+.weather-images-container {
+  display: none;
+  position: absolute;
+  top: 17rem;
+  left: 67%;
+  transform: translateX(-50%);
+}
 
+/* Animation for sunny images*/
+.sunny-animation {
+  animation: sunny-pulsate 3s infinite;
+}
+@keyframes sunny-pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animation for cloudy images */
+.cloudy-animation {
+  animation: cloudy-animation 5s linear infinite;
+  width: 8rem;
+}
+@keyframes cloudy-animation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
 
 /* Media queries for tablet and desktop */
 @media (min-width: 768px) and (max-width: 1380px) {
@@ -127,6 +163,6 @@ td:nth-child(3) {
   }
   .weather-icon {
     font-size: 30px;
-     vertical-align: middle;
-   }
+    vertical-align: middle;
+  }
 }
