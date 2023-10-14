@@ -39,8 +39,12 @@ const displayWeatherData = (data) => {
   const sunsetHours = sunsetTime.getHours();
   const sunsetMinutes = sunsetTime.getMinutes();
 
-  const sunriseTimeString = `${sunriseHours < 10 ? "0" : ""}${sunriseHours}:${sunriseMinutes < 10 ? "0" : ""}${sunriseMinutes}`;
-  const sunsetTimeString = `${sunsetHours < 10 ? "0" : ""}${sunsetHours}:${sunsetMinutes < 10 ? "0" : ""}${sunsetMinutes}`;
+  const sunriseTimeString = `${sunriseHours < 10 ? "0" : ""}${sunriseHours}:${
+    sunriseMinutes < 10 ? "0" : ""
+  }${sunriseMinutes}`;
+  const sunsetTimeString = `${sunsetHours < 10 ? "0" : ""}${sunsetHours}:${
+    sunsetMinutes < 10 ? "0" : ""
+  }${sunsetMinutes}`;
 
   const heading = document.createElement("h1");
   const temp = document.createElement("h2");
@@ -60,21 +64,21 @@ const displayWeatherData = (data) => {
   container.textContent = "";
   container.append(temp, heading, weatherDescription, divElement);
 
-     //change background color as per tempreture
-     function changeBackground() {
-      if (temperature >= 25) {
-        // Warm colors for higher temperatures
-        container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
-      } else if (temperature < 25 && temperature >= 13) {
-        // Neutral color for temperatures between 13 and 25 degrees
-        container.style.background = "linear-gradient(#ffffff, #669999)";
-      } else {
-        // Cold colors for temperatures less than 13 degrees
-        container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
-      }
+  //change background color as per tempreture
+  function changeBackground() {
+    if (temperature >= 25) {
+      // Warm colors for higher temperatures
+      container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
+    } else if (temperature < 25 && temperature >= 13) {
+      // Neutral color for temperatures between 13 and 25 degrees
+      container.style.background = "linear-gradient(#ffffff, #669999)";
+    } else {
+      // Cold colors for temperatures less than 13 degrees
+      container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
     }
+  }
 
-    changeBackground();
+  changeBackground();
 };
 
 //Adding CSS Animations
@@ -120,7 +124,6 @@ const insertWeatherImage = (data) => {
   weatherImagesContainer.appendChild(weatherImage);
 };
 
-
 // Fetch Data
 const fetchWeatherData = (city) => {
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${apiKey}`;
@@ -147,6 +150,17 @@ fetchWeatherData("Stockholm");
 citiesSearchBtn.addEventListener("click", () => {
   if (searchInput.value) {
     fetchWeatherData(searchInput.value);
+  }
+});
+
+// Search cities from input field and press enter
+searchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    const value = searchInput.value.trim();
+    if (value) {
+      fetchWeatherData(value);
+    }
   }
 });
 
@@ -261,14 +275,17 @@ const getFiveDaysForecast = ({ lat, lon }) => {
 // Function to fetch weather data using geolocation
 const fetchWeatherByGeolocation = () => {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
 
-      // Fetch weather data using the obtained latitude and longitude
-      fetchWeatherDataByGeolocation(latitude, longitude);
-    }, (error) => {
-      console.error("Geolocation error:", error.message); 
-    });
+        // Fetch weather data using the obtained latitude and longitude
+        fetchWeatherDataByGeolocation(latitude, longitude);
+      },
+      (error) => {
+        console.error("Geolocation error:", error.message);
+      }
+    );
   } else {
     console.error("Geolocation is not supported by your browser.");
   }
@@ -283,7 +300,7 @@ const fetchWeatherDataByGeolocation = (latitude, longitude) => {
     .then((data) => {
       console.log(data);
       displayWeatherData(data);
-      getFiveDaysForecast({ lat:latitude, lon:longitude});
+      getFiveDaysForecast({ lat: latitude, lon: longitude });
     })
     .catch((err) => {
       errorMsg.textContent = `Network response was not ok (${err})`;
