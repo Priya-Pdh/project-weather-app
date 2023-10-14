@@ -1,7 +1,6 @@
 body {
   font-family: "Roboto", sans-serif;
 }
-
 #search-input {
   padding: 0.5rem;
   width: 12rem;
@@ -103,50 +102,6 @@ td:nth-child(3) {
   padding-right: 0;
 }
 
-.weather-images-container {
-  display: none;
-  position: absolute;
-  top: 14rem;
-  left: 65%;
-  transform: translateX(-50%);
-}
-
-/* Animation for sunny images*/
-.sunny-animation {
-  animation: pulsate 3s infinite;
-}
-.rainy-animation {
-  animation: pulsate 7s infinite;
-}
-@keyframes pulsate {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Animation for cloudy images */
-.cloudy-animation {
-  animation: cloudy-animation 5s linear infinite;
-  width: 8rem;
-}
-@keyframes cloudy-animation {
-  0% {
-    transform: translateX(-60%);
-  }
-  50% {
-    transform: translateX(30%);
-  }
-  100% {
-    transform: translateX(-60%);
-  }
-}
-
 /* Media queries for tablet and desktop */
 @media (min-width: 768px) and (max-width: 1380px) {
   /* Tablet and desktop styles can go here */
@@ -177,6 +132,14 @@ td:nth-child(3) {
   }
 }
 
+.weather-images-container {
+  display: none;
+  position: absolute;
+  top: 14rem;
+  left: 65%;
+  transform: translateX(-50%);
+}
+
 /* animation*/
 /* //Adding CSS Animations */
 .sunny-animation {
@@ -198,7 +161,7 @@ td:nth-child(3) {
 }
 .cloudy-animation {
   animation: cloudy-animation 5s linear infinite;
-  width: 8rem;
+  width: 5rem;
 }
 @keyframes cloudy-animation {
   0% {
@@ -210,11 +173,4 @@ td:nth-child(3) {
   100% {
     transform: translateX(-60%);
   }
-}
-.weather-images-container {
-  display: none;
-  position: absolute;
-  top: 14rem;
-  left: 65%;
-  transform: translateX(-50%);
 }
