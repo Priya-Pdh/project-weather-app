@@ -71,14 +71,17 @@ const displayWeatherData = (data) => {
       // Warm colors for higher temperatures
       container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
       search.style.background = "linear-gradient(#E8E9FF, #8589FF 0)";
+      favouriteCitiesBtn.style.backgroundColor = "#8689FF";
     } else if (temperature < 25 && temperature >= 13) {
       // Neutral color for temperatures between 13 and 25 degrees
       container.style.background = "linear-gradient(#ffffff, #669999)";
       search.style.background = "linear-gradient(#669999, #ffffff 0)";
+      favouriteCitiesBtn.style.backgroundColor = "669999";
     } else {
       // Cold colors for temperatures less than 13 degrees
       container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
       search.style.background = "linear-gradient(#f2f2f2 30%, #D9D9D9)";
+      favouriteCitiesBtn.style.backgroundColor = "D9D9D9";
     }
   }
 
@@ -99,7 +102,7 @@ const insertWeatherImage = (data) => {
   if (weatherCondition === "sunny" || weatherCondition === "clear") {
     weatherImage.src = "design/design1/assets/sunny.svg";
     weatherImage.alt = "Sunny";
-    // Animation class for sunny images
+    // Animation class for sunny image
     weatherImage.classList.add("sunny-animation");
   } else if (
     weatherCondition === "cloudy" ||
@@ -108,7 +111,7 @@ const insertWeatherImage = (data) => {
   ) {
     weatherImage.src = "design/design1/assets/cloudy.svg";
     weatherImage.alt = "Cloudy";
-    // Animation class for cloudy images
+    // Animation class for cloudy image
     weatherImage.classList.add("cloudy-animation");
   } else if (
     weatherCondition === "rain" ||
@@ -116,11 +119,13 @@ const insertWeatherImage = (data) => {
   ) {
     weatherImage.src = "design/design1/assets/rainy.svg";
     weatherImage.alt = "Rainy";
-    // Animation class for rainy images
+    // Animation class for rainy image
     weatherImage.classList.add("rainy-animation");
   } else if (weatherCondition === "snow") {
     weatherImage.src = "design/design1/assets/snow.svg";
     weatherImage.alt = "Snowing";
+    // Animation class for snow image
+    weatherImage.classList.add("snow-animation");
   }
   // Show the weather images container
   weatherImagesContainer.style.display = "block";
