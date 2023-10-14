@@ -1,6 +1,7 @@
 const apiKey = "6675145806c7290b2d43a240155a964d";
 
 const container = document.querySelector(".weather-container");
+const search = document.querySelector(".search");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
 const searchExitBtn = document.getElementById("search-exit-btn");
@@ -69,12 +70,15 @@ const displayWeatherData = (data) => {
     if (temperature >= 25) {
       // Warm colors for higher temperatures
       container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
+      search.style.background = "linear-gradient(#E8E9FF, #8589FF 0)";
     } else if (temperature < 25 && temperature >= 13) {
       // Neutral color for temperatures between 13 and 25 degrees
       container.style.background = "linear-gradient(#ffffff, #669999)";
+      search.style.background = "linear-gradient(#669999, #ffffff 0)";
     } else {
       // Cold colors for temperatures less than 13 degrees
       container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
+      search.style.background = "linear-gradient(#f2f2f2 30%, #D9D9D9)";
     }
   }
 

@@ -11,8 +11,10 @@ body {
 #search-btn {
   background-color: transparent;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
+  margin-left: 4rem;
+  color: #fff;
 }
 
 #search-exit-btn:hover,
@@ -160,6 +162,7 @@ td:nth-child(3) {
   .search {
     margin: 0 0 0 20%;
     padding: 5% 0 1% 0;
+    margin-left: 0;
   }
 
   table {
@@ -173,7 +176,6 @@ td:nth-child(3) {
     vertical-align: middle;
   }
 }
-
 
 /* animation*/
 /* //Adding CSS Animations */
