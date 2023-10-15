@@ -7,6 +7,7 @@ const searchBtn = document.getElementById("search-btn");
 const searchExitBtn = document.getElementById("search-exit-btn");
 const citiesSearchBtn = document.getElementById("cities-search-btn");
 const favouriteCitiesBtn = document.getElementById("fav-cities-btn");
+const loadingSpinner = document.getElementById("loading-spinner");
 
 const errorMsg = document.createElement("div");
 errorMsg.classList.add("error-msg");
@@ -69,19 +70,19 @@ const displayWeatherData = (data) => {
   function changeBackground() {
     if (temperature >= 25) {
       // Warm colors for higher temperatures
-      container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
-      search.style.background = "linear-gradient(#E8E9FF, #8589FF 0)";
-      favouriteCitiesBtn.style.backgroundColor = "#8689FF";
+      container.style.background = "linear-gradient(#ffffff, #8589FF)";
+      search.style.background = "linear-gradient(#8589FF, #ffffff)";
+      favouriteCitiesBtn.style.backgroundColor = "#8589FF";
     } else if (temperature < 25 && temperature >= 13) {
       // Neutral color for temperatures between 13 and 25 degrees
-      container.style.background = "linear-gradient(#ffffff, #669999)";
-      search.style.background = "linear-gradient(#669999, #ffffff 0)";
-      favouriteCitiesBtn.style.backgroundColor = "669999";
+      container.style.background = "linear-gradient(#ffffff, #4895ef)";
+      search.style.background = "linear-gradient(#4895ef, #ffffff)";
+      favouriteCitiesBtn.style.backgroundColor = "#4895ef";
     } else {
       // Cold colors for temperatures less than 13 degrees
-      container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
-      search.style.background = "linear-gradient(#f2f2f2 30%, #D9D9D9)";
-      favouriteCitiesBtn.style.backgroundColor = "D9D9D9";
+      container.style.background = "linear-gradient(#ffffff, #64a6bd)";
+      search.style.background = "linear-gradient(#64a6bd, #ffffff)";
+      favouriteCitiesBtn.style.backgroundColor = "#64a6bd";
     }
   }
 
@@ -133,6 +134,49 @@ const insertWeatherImage = (data) => {
   weatherImagesContainer.appendChild(weatherImage);
 };
 
+
+// Fetch air quality data
+const fetchAirQualityData = (lat, long) => {
+  const airQualityApiUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${apiKey}`;
+
+  fetch(airQualityApiUrl)
+    .then((response) => response.json())
+    .then((airQualityData) => {
+      const airQuality = airQualityData.list[0];
+      const airQualityValue = airQuality.main.aqi;
+      console.log("AIR:", airQualityValue);
+
+      // Out put of air quality. Add condition based on the value of air quality
+      const airQualityValueElement = document.createElement("h4");
+      if (airQualityValue >= 0 && airQualityValue <= 50) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Good`)
+        );
+      } else if (airQualityValue >= 51 && airQualityValue <= 100) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Moderate`)
+        );
+      } else if (airQualityValue >= 151 && airQualityValue <= 200) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Unhealthy`)
+        );
+      } else if (airQualityValue >= 201 && airQualityValue <= 300) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Very unhealthy`)
+        );
+      } else if (airQualityValue > 300) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Hazardous`)
+        );
+      } else {
+        return "Data not available";
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching air quality data:", error);
+    });
+};
+
 // Fetch Data
 const fetchWeatherData = (city) => {
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${apiKey}`;
@@ -143,6 +187,7 @@ const fetchWeatherData = (city) => {
       getFiveDaysForecast(data.coord);
       displayWeatherData(data);
       insertWeatherImage(data);
+      fetchAirQualityData(data.coord.lat, data.coord.lon);
       return data;
     })
     .catch((err) => {
@@ -292,6 +337,25 @@ const fetchWeatherByGeolocation = () => {
         fetchWeatherDataByGeolocation(latitude, longitude);
       },
       (error) => {
+        console.error("Geolocation error:", error.message);
+      }
+    );
+
+    // Show the loading spinner while waiting for geolocation data
+    loadingSpinner.style.display = "block";
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // Geolocation data is available, so hide the loading spinner
+        loadingSpinner.style.display = "none";
+        const { latitude, longitude } = position.coords;
+
+        // Fetch weather data using the obtained latitude and longitude
+        fetchWeatherDataByGeolocation(latitude, longitude);
+      },
+      (error) => {
+        // Hide the loading spinner in case of errors
+        loadingSpinner.style.display = "none";
         console.error("Geolocation error:", error.message);
       }
     );
