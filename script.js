@@ -51,6 +51,7 @@ const displayWeatherData = (data) => {
   const heading = document.createElement("h1");
   const temp = document.createElement("h2");
   const weatherDescription = document.createElement("p");
+  weatherDescription.id = "weather-description";
   const sunriseElement = document.createElement("p");
   const sunsetElement = document.createElement("p");
   const divElement = document.createElement("div");
@@ -143,25 +144,26 @@ const fetchAirQualityData = (lat, long) => {
       console.log("AIR:", airQualityValue);
 
       // Out put of air quality. Add condition based on the value of air quality
-      const airQualityValueElement = document.createElement("h4");
+      const airQualityValueElement = document.createElement("p");
+      const weatherDescription = document.getElementById("weather-description");
       if (airQualityValue >= 0 && airQualityValue <= 50) {
-        container.append(
+        weatherDescription.after(
           (airQualityValueElement.textContent = `Air quality: Good`)
         );
       } else if (airQualityValue >= 51 && airQualityValue <= 100) {
-        container.append(
+        weatherDescription.after(
           (airQualityValueElement.textContent = `Air quality: Moderate`)
         );
       } else if (airQualityValue >= 151 && airQualityValue <= 200) {
-        container.append(
+        weatherDescription.after(
           (airQualityValueElement.textContent = `Air quality: Unhealthy`)
         );
       } else if (airQualityValue >= 201 && airQualityValue <= 300) {
-        container.append(
+        weatherDescription.after(
           (airQualityValueElement.textContent = `Air quality: Very unhealthy`)
         );
       } else if (airQualityValue > 300) {
-        container.append(
+        weatherDescription.after(
           (airQualityValueElement.textContent = `Air quality: Hazardous`)
         );
       } else {
@@ -328,18 +330,21 @@ const fetchWeatherByGeolocation = () => {
     // Show the loading spinner while waiting for geolocation data
     loadingSpinner.style.display = "block";
 
-    navigator.geolocation.getCurrentPosition((position) => {
-            // Geolocation data is available, so hide the loading spinner
-            loadingSpinner.style.display = "none";
-      const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // Geolocation data is available, so hide the loading spinner
+        loadingSpinner.style.display = "none";
+        const { latitude, longitude } = position.coords;
 
-      // Fetch weather data using the obtained latitude and longitude
-      fetchWeatherDataByGeolocation(latitude, longitude);
-    }, (error) => {
-       // Hide the loading spinner in case of errors
-       loadingSpinner.style.display = "none";
-      console.error("Geolocation error:", error.message); 
-    });
+        // Fetch weather data using the obtained latitude and longitude
+        fetchWeatherDataByGeolocation(latitude, longitude);
+      },
+      (error) => {
+        // Hide the loading spinner in case of errors
+        loadingSpinner.style.display = "none";
+        console.error("Geolocation error:", error.message);
+      }
+    );
   } else {
     console.error("Geolocation is not supported by your browser.");
   }
