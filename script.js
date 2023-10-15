@@ -71,17 +71,14 @@ const displayWeatherData = (data) => {
     if (temperature >= 25) {
       // Warm colors for higher temperatures
       container.style.background = "linear-gradient(#ffffff, #8589FF)";
-      search.style.background = "linear-gradient(#8589FF, #ffffff)";
       favouriteCitiesBtn.style.backgroundColor = "#8589FF";
     } else if (temperature < 25 && temperature >= 13) {
       // Neutral color for temperatures between 13 and 25 degrees
       container.style.background = "linear-gradient(#ffffff, #4895ef)";
-      search.style.background = "linear-gradient(#4895ef, #ffffff)";
       favouriteCitiesBtn.style.backgroundColor = "#4895ef";
     } else {
       // Cold colors for temperatures less than 13 degrees
       container.style.background = "linear-gradient(#ffffff, #64a6bd)";
-      search.style.background = "linear-gradient(#64a6bd, #ffffff)";
       favouriteCitiesBtn.style.backgroundColor = "#64a6bd";
     }
   }
@@ -133,7 +130,6 @@ const insertWeatherImage = (data) => {
   // Append the weather image to the weather images container
   weatherImagesContainer.appendChild(weatherImage);
 };
-
 
 // Fetch air quality data
 const fetchAirQualityData = (lat, long) => {
