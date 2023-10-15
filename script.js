@@ -141,33 +141,36 @@ const fetchAirQualityData = (lat, long) => {
     .then((airQualityData) => {
       const airQuality = airQualityData.list[0];
       const airQualityValue = airQuality.main.aqi;
-      console.log("AIR:", airQualityValue);
 
       // Out put of air quality. Add condition based on the value of air quality
       const airQualityValueElement = document.createElement("p");
       const weatherDescription = document.getElementById("weather-description");
-      if (airQualityValue >= 0 && airQualityValue <= 50) {
-        weatherDescription.after(
-          (airQualityValueElement.textContent = `Air quality: Good`)
-        );
-      } else if (airQualityValue >= 51 && airQualityValue <= 100) {
-        weatherDescription.after(
-          (airQualityValueElement.textContent = `Air quality: Moderate`)
-        );
-      } else if (airQualityValue >= 151 && airQualityValue <= 200) {
-        weatherDescription.after(
-          (airQualityValueElement.textContent = `Air quality: Unhealthy`)
-        );
-      } else if (airQualityValue >= 201 && airQualityValue <= 300) {
-        weatherDescription.after(
-          (airQualityValueElement.textContent = `Air quality: Very unhealthy`)
-        );
-      } else if (airQualityValue > 300) {
-        weatherDescription.after(
-          (airQualityValueElement.textContent = `Air quality: Hazardous`)
-        );
-      } else {
-        return "Data not available";
+      switch (airQualityValue) {
+        case 1:
+          weatherDescription.after(
+            (airQualityValueElement.textContent = `Air quality: Good`)
+          );
+          break;
+        case 2:
+          weatherDescription.after(
+            (airQualityValueElement.textContent = `Air quality: Fair`)
+          );
+          break;
+        case 3:
+          weatherDescription.after(
+            (airQualityValueElement.textContent = `Air quality: Moderate`)
+          );
+          break;
+        case 4:
+          weatherDescription.after(
+            (airQualityValueElement.textContent = `Air quality: Poor`)
+          );
+          break;
+        case 5:
+          weatherDescription.after(
+            (airQualityValueElement.textContent = `Air quality: Very poor`)
+          );
+          break;
       }
     })
     .catch((error) => {
