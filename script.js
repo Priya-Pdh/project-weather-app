@@ -40,8 +40,12 @@ const displayWeatherData = (data) => {
   const sunsetHours = sunsetTime.getHours();
   const sunsetMinutes = sunsetTime.getMinutes();
 
-  const sunriseTimeString = `${sunriseHours < 10 ? "0" : ""}${sunriseHours}:${sunriseMinutes < 10 ? "0" : ""}${sunriseMinutes}`;
-  const sunsetTimeString = `${sunsetHours < 10 ? "0" : ""}${sunsetHours}:${sunsetMinutes < 10 ? "0" : ""}${sunsetMinutes}`;
+  const sunriseTimeString = `${sunriseHours < 10 ? "0" : ""}${sunriseHours}:${
+    sunriseMinutes < 10 ? "0" : ""
+  }${sunriseMinutes}`;
+  const sunsetTimeString = `${sunsetHours < 10 ? "0" : ""}${sunsetHours}:${
+    sunsetMinutes < 10 ? "0" : ""
+  }${sunsetMinutes}`;
 
   const heading = document.createElement("h1");
   const temp = document.createElement("h2");
@@ -61,6 +65,7 @@ const displayWeatherData = (data) => {
   container.textContent = "";
   container.append(temp, heading, weatherDescription, divElement);
 
+
      //change background color as per tempreture
      function changeBackground() {
       if (temperature >= 25) {
@@ -73,9 +78,11 @@ const displayWeatherData = (data) => {
         // Cold colors for temperatures less than 13 degrees
         container.style.background = "linear-gradient(#ffffff, #64a6bd)";
       }
-    }
 
-    changeBackground();
+    }
+  }
+
+  changeBackground();
 };
 
 //Adding CSS Animations
@@ -121,6 +128,47 @@ const insertWeatherImage = (data) => {
   weatherImagesContainer.appendChild(weatherImage);
 };
 
+// Fetch air quality data
+const fetchAirQualityData = (lat, long) => {
+  const airQualityApiUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${apiKey}`;
+
+  fetch(airQualityApiUrl)
+    .then((response) => response.json())
+    .then((airQualityData) => {
+      const airQuality = airQualityData.list[0];
+      const airQualityValue = airQuality.main.aqi;
+      console.log("AIR:", airQualityValue);
+
+      // Out put of air quality. Add condition based on the value of air quality
+      const airQualityValueElement = document.createElement("h4");
+      if (airQualityValue >= 0 && airQualityValue <= 50) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Good`)
+        );
+      } else if (airQualityValue >= 51 && airQualityValue <= 100) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Moderate`)
+        );
+      } else if (airQualityValue >= 151 && airQualityValue <= 200) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Unhealthy`)
+        );
+      } else if (airQualityValue >= 201 && airQualityValue <= 300) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Very unhealthy`)
+        );
+      } else if (airQualityValue > 300) {
+        container.append(
+          (airQualityValueElement.textContent = `Air quality: Hazardous`)
+        );
+      } else {
+        return "Data not available";
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching air quality data:", error);
+    });
+};
 
 // Fetch Data
 const fetchWeatherData = (city) => {
@@ -132,6 +180,7 @@ const fetchWeatherData = (city) => {
       getFiveDaysForecast(data.coord);
       displayWeatherData(data);
       insertWeatherImage(data);
+      fetchAirQualityData(data.coord.lat, data.coord.lon);
       return data;
     })
     .catch((err) => {
@@ -262,6 +311,17 @@ const getFiveDaysForecast = ({ lat, lon }) => {
 // Function to fetch weather data using geolocation
 const fetchWeatherByGeolocation = () => {
   if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+
+        // Fetch weather data using the obtained latitude and longitude
+        fetchWeatherDataByGeolocation(latitude, longitude);
+      },
+      (error) => {
+        console.error("Geolocation error:", error.message);
+      }
+    );
     // Show the loading spinner while waiting for geolocation data
     loadingSpinner.style.display = "block";
 
@@ -291,7 +351,7 @@ const fetchWeatherDataByGeolocation = (latitude, longitude) => {
     .then((data) => {
       console.log(data);
       displayWeatherData(data);
-      getFiveDaysForecast({ lat:latitude, lon:longitude});
+      getFiveDaysForecast({ lat: latitude, lon: longitude });
     })
     .catch((err) => {
       errorMsg.textContent = `Network response was not ok (${err})`;
