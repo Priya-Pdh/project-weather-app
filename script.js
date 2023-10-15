@@ -325,40 +325,26 @@ const getFiveDaysForecast = ({ lat, lon }) => {
 // Function to fetch weather data using geolocation
 const fetchWeatherByGeolocation = () => {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-
-        // Fetch weather data using the obtained latitude and longitude
-        fetchWeatherDataByGeolocation(latitude, longitude);
-      },
-      (error) => {
-        console.error("Geolocation error:", error.message);
-      }
-    );
-
     // Show the loading spinner while waiting for geolocation data
     loadingSpinner.style.display = "block";
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        // Geolocation data is available, so hide the loading spinner
-        loadingSpinner.style.display = "none";
-        const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition((position) => {
+            // Geolocation data is available, so hide the loading spinner
+            loadingSpinner.style.display = "none";
+      const { latitude, longitude } = position.coords;
 
-        // Fetch weather data using the obtained latitude and longitude
-        fetchWeatherDataByGeolocation(latitude, longitude);
-      },
-      (error) => {
-        // Hide the loading spinner in case of errors
-        loadingSpinner.style.display = "none";
-        console.error("Geolocation error:", error.message);
-      }
-    );
+      // Fetch weather data using the obtained latitude and longitude
+      fetchWeatherDataByGeolocation(latitude, longitude);
+    }, (error) => {
+       // Hide the loading spinner in case of errors
+       loadingSpinner.style.display = "none";
+      console.error("Geolocation error:", error.message); 
+    });
   } else {
     console.error("Geolocation is not supported by your browser.");
   }
 };
+
 // Function to fetch weather data using latitude and longitude
 const fetchWeatherDataByGeolocation = (latitude, longitude) => {
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=${apiKey}`;
