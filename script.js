@@ -64,13 +64,13 @@ const displayWeatherData = (data) => {
      function changeBackground() {
       if (temperature >= 25) {
         // Warm colors for higher temperatures
-        container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
+        container.style.background = "linear-gradient(#ffffff, #8589FF)";
       } else if (temperature < 25 && temperature >= 13) {
         // Neutral color for temperatures between 13 and 25 degrees
-        container.style.background = "linear-gradient(#ffffff, #669999)";
+        container.style.background = "linear-gradient(#ffffff, #4895ef)";
       } else {
         // Cold colors for temperatures less than 13 degrees
-        container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
+        container.style.background = "linear-gradient(#ffffff, #64a6bd)";
       }
     }
 
