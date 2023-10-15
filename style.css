@@ -1,7 +1,6 @@
 body {
   font-family: "Roboto", sans-serif;
 }
-
 #search-input {
   padding: 0.5rem;
   width: 12rem;
@@ -11,8 +10,10 @@ body {
 #search-btn {
   background-color: transparent;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
+  margin-left: 4rem;
+  color: lightslategray;
 }
 
 #search-exit-btn:hover,
@@ -24,36 +25,42 @@ body {
 
 #cities-search-btn {
   border: none;
-  background-color: #222350;
+  background-color: lightslategray;
   color: #fff;
   font-size: 1.2rem;
+  padding: 0.5rem;
 }
 
 #fav-cities {
   display: flex;
   justify-content: end;
-  margin-right: 30px;
+  position: relative;
 }
 #fav-cities-btn {
   border: none;
   font-size: 2rem;
-  width: 4rem;
+  width: 6rem;
+  height: 6rem;
   color: #fff;
   background-color: #757aff;
   border-radius: 50%;
   padding: 1rem;
   cursor: pointer;
   margin: 1%;
+  position: absolute;
+  top: -2rem;
 }
 
 .weather-container {
   padding-left: 15%;
+  padding-top: 1px;
   color: #353535;
   padding-bottom: 30px;
   clip-path: ellipse(130% 100% at 50% 0%);
 }
 h2 {
   font-size: 1rem;
+  margin-top: 2rem;
 }
 
 /* Sunrise and sunset styles */
@@ -65,7 +72,8 @@ h2 {
 
 /* Search styles */
 .search {
-  margin: 10% 0 0 16%;
+  display: flex;
+  margin-top: 20px;
 }
 
 /* Error message styles */
@@ -102,13 +110,10 @@ td:nth-child(2) {
 td:nth-child(3) {
   padding-right: 0;
 }
-
 .weather-images-container {
-  display: none;
   position: absolute;
-  top: 14rem;
-  left: 65%;
-  transform: translateX(-50%);
+  top: 6.5rem;
+  left: 70%;
 }
 
 #user-location-btn {
@@ -160,10 +165,14 @@ td:nth-child(3) {
 }
 
 /* Media queries for tablet and desktop */
-@media (min-width: 768px) and (max-width: 1380px) {
+@media (min-width: 768px) and (max-width: 1800px) {
   /* Tablet and desktop styles can go here */
   body {
-    margin: 10% 25% 10% 25%;
+    /* margin: 3% 45% 10% 25%; */
+    max-width: 470px;
+    margin: auto;
+    height: 830px;
+    margin-top: 2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow */
     background-color: rgba(255, 255, 255, 0.8);
   }
@@ -174,13 +183,18 @@ td:nth-child(3) {
   .search {
     margin: 0 0 0 20%;
     padding: 5% 0 1% 0;
+    margin-left: 0;
+  }
+
+  .weather-images-container {
+    left: 58%;
   }
 
   table {
     margin-left: 6%;
   }
   #fav-cities {
-    padding-right: 10%;
+    padding-right: 5%;
   }
   .weather-icon {
     font-size: 30px;
@@ -188,21 +202,26 @@ td:nth-child(3) {
   }
 }
 
-
 /* animation*/
+
 /* //Adding CSS Animations */
 .sunny-animation {
   animation: pulsate 3s infinite;
 }
 .rainy-animation {
   animation: pulsate 7s infinite;
+  width: 5rem;
+}
+.snow-animation {
+  animation: pulsate 7s infinite;
+  width: 5rem;
 }
 @keyframes pulsate {
   0% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
   100% {
     transform: scale(1);
@@ -210,7 +229,7 @@ td:nth-child(3) {
 }
 .cloudy-animation {
   animation: cloudy-animation 5s linear infinite;
-  width: 8rem;
+  width: 5rem;
 }
 @keyframes cloudy-animation {
   0% {
@@ -223,13 +242,7 @@ td:nth-child(3) {
     transform: translateX(-60%);
   }
 }
-.weather-images-container {
-  display: none;
-  position: absolute;
-  top: 14rem;
-  left: 65%;
-  transform: translateX(-50%);
-}
+
 .loading-spinner {
   position: fixed;
   display: none;

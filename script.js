@@ -1,6 +1,7 @@
 const apiKey = "6675145806c7290b2d43a240155a964d";
 
 const container = document.querySelector(".weather-container");
+const search = document.querySelector(".search");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
 const searchExitBtn = document.getElementById("search-exit-btn");
@@ -70,12 +71,15 @@ const displayWeatherData = (data) => {
     if (temperature >= 25) {
       // Warm colors for higher temperatures
       container.style.background = "linear-gradient(#ffffff, #8589FF)";
+      favouriteCitiesBtn.style.backgroundColor = "#8589FF";
     } else if (temperature < 25 && temperature >= 13) {
       // Neutral color for temperatures between 13 and 25 degrees
       container.style.background = "linear-gradient(#ffffff, #4895ef)";
+      favouriteCitiesBtn.style.backgroundColor = "#4895ef";
     } else {
       // Cold colors for temperatures less than 13 degrees
       container.style.background = "linear-gradient(#ffffff, #64a6bd)";
+      favouriteCitiesBtn.style.backgroundColor = "#64a6bd";
     }
   }
 
@@ -96,7 +100,7 @@ const insertWeatherImage = (data) => {
   if (weatherCondition === "sunny" || weatherCondition === "clear") {
     weatherImage.src = "design/design1/assets/sunny.svg";
     weatherImage.alt = "Sunny";
-    // Animation class for sunny images
+    // Animation class for sunny image
     weatherImage.classList.add("sunny-animation");
   } else if (
     weatherCondition === "cloudy" ||
@@ -105,7 +109,7 @@ const insertWeatherImage = (data) => {
   ) {
     weatherImage.src = "design/design1/assets/cloudy.svg";
     weatherImage.alt = "Cloudy";
-    // Animation class for cloudy images
+    // Animation class for cloudy image
     weatherImage.classList.add("cloudy-animation");
   } else if (
     weatherCondition === "rain" ||
@@ -113,11 +117,13 @@ const insertWeatherImage = (data) => {
   ) {
     weatherImage.src = "design/design1/assets/rainy.svg";
     weatherImage.alt = "Rainy";
-    // Animation class for rainy images
+    // Animation class for rainy image
     weatherImage.classList.add("rainy-animation");
   } else if (weatherCondition === "snow") {
     weatherImage.src = "design/design1/assets/snow.svg";
     weatherImage.alt = "Snowing";
+    // Animation class for snow image
+    weatherImage.classList.add("snow-animation");
   }
   // Show the weather images container
   weatherImagesContainer.style.display = "block";
@@ -194,6 +200,17 @@ fetchWeatherData("Stockholm");
 citiesSearchBtn.addEventListener("click", () => {
   if (searchInput.value) {
     fetchWeatherData(searchInput.value);
+  }
+});
+
+// Search cities from input field and press enter
+searchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    const value = searchInput.value.trim();
+    if (value) {
+      fetchWeatherData(value);
+    }
   }
 });
 
@@ -308,21 +325,36 @@ const getFiveDaysForecast = ({ lat, lon }) => {
 // Function to fetch weather data using geolocation
 const fetchWeatherByGeolocation = () => {
   if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+
+        // Fetch weather data using the obtained latitude and longitude
+        fetchWeatherDataByGeolocation(latitude, longitude);
+      },
+      (error) => {
+        console.error("Geolocation error:", error.message);
+      }
+    );
+
     // Show the loading spinner while waiting for geolocation data
     loadingSpinner.style.display = "block";
 
-    navigator.geolocation.getCurrentPosition((position) => {
-            // Geolocation data is available, so hide the loading spinner
-            loadingSpinner.style.display = "none";
-      const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // Geolocation data is available, so hide the loading spinner
+        loadingSpinner.style.display = "none";
+        const { latitude, longitude } = position.coords;
 
-      // Fetch weather data using the obtained latitude and longitude
-      fetchWeatherDataByGeolocation(latitude, longitude);
-    }, (error) => {
-       // Hide the loading spinner in case of errors
-       loadingSpinner.style.display = "none";
-      console.error("Geolocation error:", error.message); 
-    });
+        // Fetch weather data using the obtained latitude and longitude
+        fetchWeatherDataByGeolocation(latitude, longitude);
+      },
+      (error) => {
+        // Hide the loading spinner in case of errors
+        loadingSpinner.style.display = "none";
+        console.error("Geolocation error:", error.message);
+      }
+    );
   } else {
     console.error("Geolocation is not supported by your browser.");
   }
