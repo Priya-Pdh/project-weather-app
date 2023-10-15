@@ -49,6 +49,8 @@ body {
 .weather-container {
   padding-left: 15%;
   color: #353535;
+  padding-bottom: 30px;
+  clip-path: ellipse(130% 100% at 50% 0%);
 }
 h2 {
   font-size: 1rem;
@@ -107,6 +109,18 @@ td:nth-child(3) {
   top: 14rem;
   left: 65%;
   transform: translateX(-50%);
+}
+
+#user-location-btn {
+  background-color: white;
+  border: none;
+  font-size: 20px;
+}
+
+.top-container {
+  display: flex;
+  justify-content: space-around;
+ 
 }
 
 /* Animation for sunny images*/
