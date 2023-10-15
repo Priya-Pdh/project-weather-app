@@ -111,6 +111,18 @@ td:nth-child(3) {
   transform: translateX(-50%);
 }
 
+#user-location-btn {
+  background-color: white;
+  border: none;
+  font-size: 20px;
+}
+
+.top-container {
+  display: flex;
+  justify-content: space-around;
+ 
+}
+
 /* Animation for sunny images*/
 .sunny-animation {
   animation: pulsate 3s infinite;
