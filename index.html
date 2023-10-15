@@ -21,20 +21,25 @@
     <title>Weather App</title>
   </head>
   <body>
-    <div class="search">
-      <button id="search-exit-btn" style="display: none">
-        <i class="fa-sharp fa-solid fa-xmark"></i>
-      </button>
-      <button id="search-btn">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
-
-      <input id="search-input" style="visibility: hidden" />
-      <button id="cities-search-btn" style="display: none">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
+    <div class="top-container">
+      <div class="search">
+        <button id="search-exit-btn" style="display: none">
+          <i class="fa-sharp fa-solid fa-xmark"></i>
+        </button>
+        <button id="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+  
+        <input id="search-input" style="visibility: hidden" />
+        <button id="cities-search-btn" style="display: none">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+      <button id="user-location-btn" ><i class="fas fa-map-marker-alt" style="color: red;"></i></button>
     </div>
-
+    <div class="loading-spinner" id="loading-spinner">
+      <div class="spinner"></div>
+    </div>
     <div class="weather-container"></div>
     <div class="weather-images-container"></div>
     <div id="fav-cities">
@@ -42,7 +47,6 @@
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
-    <button id="user-location-btn">Get User Location</button>
     <table id="weather-forecast">
       <tr></tr>
     </table>

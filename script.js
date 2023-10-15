@@ -6,6 +6,7 @@ const searchBtn = document.getElementById("search-btn");
 const searchExitBtn = document.getElementById("search-exit-btn");
 const citiesSearchBtn = document.getElementById("cities-search-btn");
 const favouriteCitiesBtn = document.getElementById("fav-cities-btn");
+const loadingSpinner = document.getElementById("loading-spinner");
 
 const errorMsg = document.createElement("div");
 errorMsg.classList.add("error-msg");
@@ -64,17 +65,20 @@ const displayWeatherData = (data) => {
   container.textContent = "";
   container.append(temp, heading, weatherDescription, divElement);
 
-  //change background color as per tempreture
-  function changeBackground() {
-    if (temperature >= 25) {
-      // Warm colors for higher temperatures
-      container.style.background = "linear-gradient(#8589FF, #E8E9FF)";
-    } else if (temperature < 25 && temperature >= 13) {
-      // Neutral color for temperatures between 13 and 25 degrees
-      container.style.background = "linear-gradient(#ffffff, #669999)";
-    } else {
-      // Cold colors for temperatures less than 13 degrees
-      container.style.background = "linear-gradient(#D9D9D9 30%, #f2f2f2)";
+
+     //change background color as per tempreture
+     function changeBackground() {
+      if (temperature >= 25) {
+        // Warm colors for higher temperatures
+        container.style.background = "linear-gradient(#ffffff, #8589FF)";
+      } else if (temperature < 25 && temperature >= 13) {
+        // Neutral color for temperatures between 13 and 25 degrees
+        container.style.background = "linear-gradient(#ffffff, #4895ef)";
+      } else {
+        // Cold colors for temperatures less than 13 degrees
+        container.style.background = "linear-gradient(#ffffff, #64a6bd)";
+      }
+
     }
   }
 
@@ -318,6 +322,21 @@ const fetchWeatherByGeolocation = () => {
         console.error("Geolocation error:", error.message);
       }
     );
+    // Show the loading spinner while waiting for geolocation data
+    loadingSpinner.style.display = "block";
+
+    navigator.geolocation.getCurrentPosition((position) => {
+            // Geolocation data is available, so hide the loading spinner
+            loadingSpinner.style.display = "none";
+      const { latitude, longitude } = position.coords;
+
+      // Fetch weather data using the obtained latitude and longitude
+      fetchWeatherDataByGeolocation(latitude, longitude);
+    }, (error) => {
+       // Hide the loading spinner in case of errors
+       loadingSpinner.style.display = "none";
+      console.error("Geolocation error:", error.message); 
+    });
   } else {
     console.error("Geolocation is not supported by your browser.");
   }
